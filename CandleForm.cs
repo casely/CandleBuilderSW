@@ -15,6 +15,7 @@ namespace CandleSW
 
         CandleParametrs _parametr = new CandleParametrs();
         CandleBuilder _candle = new CandleBuilder();
+        bool _existDetail = false;
 
         /// <summary>
         /// Form constructor
@@ -31,7 +32,8 @@ namespace CandleSW
         {
             
             ReadTextBox();
-            _candle.BuildCandle(_parametr);
+            if (_existDetail == true)
+                _candle.BuildCandle(_parametr);
         }
 
         /// <summary>
@@ -43,10 +45,13 @@ namespace CandleSW
             {
                 _parametr.CarvingLength = Convert.ToDouble(textBox5.Text);
                 _parametr.NutLength = Convert.ToDouble(textBox3.Text);
+                _existDetail = true;
             }
             catch (Exception e)
             {
                 DialogResult res = MessageBox.Show(e.Message,"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (res == DialogResult.OK)
+                    _existDetail = false;
             }
         }
 

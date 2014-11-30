@@ -16,17 +16,29 @@ namespace CandleSW
         public double CarvingLength
         {
             get { return _carvingLength / 1000; }
-            set { _carvingLength = value; }
+            set
+            {
+                if (value < 10 || value > 15)
+                    throw new Exception("Длина резьбовой части не должна быть меньше 10 мм и превышать 15 мм"); 
+                else
+                    _carvingLength = value; 
+            }
         }
 
-        private static double _nutLength;
+        private double _nutLength;
         public double NutLength
         {
             get { return _nutLength / 1000; }
-            set { _nutLength = value; }
+            set
+            {
+                if (value < 4 || value > 10)
+                    throw new Exception("Высота гайки не должна быть меньше 4 мм и превышать 10 мм");
+                else
+                    _nutLength = value;
+            }
         }
 
-        private static double _nutSize;
+        private double _nutSize;
         public double NutSize
         {
             get { return _nutSize / 1000; }
