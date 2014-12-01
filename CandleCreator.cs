@@ -9,13 +9,17 @@ using SolidWorks.Interop.swconst;
 
 namespace CandleSW
 {
+    
+    /// <summary>
+    /// Статический класс для создания частей детали
+    /// </summary>
+    /// 
     public static class CandleCreator
     {
-
+        
         /// <summary>
-        /// Create carving static method
+        /// Создание резьбовой части
         /// </summary>
-        /// 
         public static void CreateCarving(double carvingLength, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames)
         {
             string modelName = "C:\\Users\\dafunk\\Desktop\\Резьба.sldprt";
@@ -26,14 +30,19 @@ namespace CandleSW
             swModel.Extension.SelectByID2("Arc1", "SKETCHSEGMENT", 0, 0, 0, false, 0, null, 0);
             swModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, carvingLength, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
 
+            // Фаска 
+            swModel.Extension.SelectByID2("", "FACE", 0, 0, carvingLength, false, 0, null, 0);
+            swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.003);
+            swModel.FeatureManager.FeatureCut3(true, true, false, 0, 0, 0.001, 0.001, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
+
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
         }
 
         /// <summary>
-        /// Create nut static method
+        /// Создание гайки
         /// </summary>
-        public static void CreateNut(double nutLength, double nutSize, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames, SketchSegment skSegment)
+        public static void CreateNut(double nutLength, double nutSize, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames, double chamferRadius)
         {
             string modelName = "C:\\Users\\dafunk\\Desktop\\Болт.sldprt";
             Array vSkLines = null;
@@ -44,11 +53,11 @@ namespace CandleSW
             swModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, nutLength, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
             // Фаска 1
             swModel.Extension.SelectByID2("Спереди", "PLANE", 0, 0, 0, false, 0, null, 0);
-            skSegment = swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.008);
+            swModel.SketchManager.CreateCircleByRadius(0, 0, 0, chamferRadius);
             swModel.FeatureManager.FeatureCut3(true, true, true, 0, 0, 0.001, 0.001, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
             // Фаска 2
             swModel.Extension.SelectByID2("", "FACE", 0, 0, nutLength, false, 0, null, 0);
-            skSegment = swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.008);
+            swModel.SketchManager.CreateCircleByRadius(0, 0, 0, chamferRadius);
             swModel.FeatureManager.FeatureCut3(true, true, false, 0, 0, 0.001, 0.001, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
             
             swModel.SaveAs(modelName);
@@ -56,7 +65,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Create isolator static method
+        /// Создание изолятора
         /// </summary>
         public static void CreateIsolator(double isolatorLength, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames)
         {
@@ -67,6 +76,11 @@ namespace CandleSW
             swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.005);
             swModel.Extension.SelectByID2("Arc1", "SKETCHSEGMENT", 0, 0, 0, false, 0, null, 0);
             swModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, isolatorLength, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
+
+            // Фаска 
+            swModel.Extension.SelectByID2("", "FACE", 0, 0, isolatorLength, false, 0, null, 0);
+            swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.003);
+            swModel.FeatureManager.FeatureCut3(true, true, false, 0, 0, 0.001, 0.001, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
 
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);

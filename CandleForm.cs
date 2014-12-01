@@ -18,7 +18,7 @@ namespace CandleSW
         bool _existDetail = false;
 
         /// <summary>
-        /// Form constructor
+        /// Конструктор формы
         /// </summary>
         public CandleForm()
         {
@@ -26,7 +26,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Create button handler
+        /// Обработчик нажатия на кнопку построить
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
@@ -37,7 +37,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Read from textbox method
+        /// Метод считывающий данные с полей
         /// </summary>
         private void ReadTextBox()
         {
@@ -57,7 +57,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// RB handlers
+        /// Обработчик выбора
         /// </summary>
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
@@ -82,7 +82,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Default parametrs button handler
+        /// Обработчик кнопки по-умолчанию
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
@@ -95,7 +95,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Choose nut size handler
+        /// Выбор размера гайки
         /// </summary>
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -103,12 +103,15 @@ namespace CandleSW
             {
                 case 0:
                     _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
+                    _parametr.ChamferRadius = 0.008;
                     break;
                 case 1:
                     _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
+                    _parametr.ChamferRadius = 0.0095;
                     break;
                 case 2:
                     _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
+                    _parametr.ChamferRadius = 0.01;
                     break;
             }
         }

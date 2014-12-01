@@ -10,7 +10,7 @@ namespace CandleSW
     {
 
         /// <summary>
-        /// Method find polygon radius for nut
+        /// Нахождение радиуса для построения шестиугольника
         /// </summary>
         public static double GetPolygonRadius(double nutSize)
         {

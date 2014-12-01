@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace CandleSW
 {
+
+    /// <summary>
+    /// Класс хранящий параметры детали
+    /// </summary>
     public class CandleParametrs
     {
 
         /// <summary>
-        /// Class with candle parametrs
+        /// Длина резьбовой части
         /// </summary>
         private double _carvingLength;
         public double CarvingLength
@@ -25,6 +29,9 @@ namespace CandleSW
             }
         }
 
+        /// <summary>
+        /// Длина гайки части
+        /// </summary>
         private double _nutLength;
         public double NutLength
         {
@@ -38,6 +45,19 @@ namespace CandleSW
             }
         }
 
+        /// <summary>
+        /// Радиус окружности под фаску
+        /// </summary>
+        private double _chamferRadius;
+        public double ChamferRadius
+        {
+            get { return _chamferRadius; }
+            set { _chamferRadius = value; }
+        }
+
+        /// <summary>
+        /// Размер гайки
+        /// </summary>
         private double _nutSize;
         public double NutSize
         {
@@ -45,6 +65,9 @@ namespace CandleSW
             set { _nutSize = value; }
         }
 
+        /// <summary>
+        /// Длина изолятора
+        /// </summary>
         private double _isolatorLength;
         public double IsolatorLength
         {
@@ -55,6 +78,22 @@ namespace CandleSW
                     throw new Exception("Длина изолятора не должна быть меньше 7 мм и превышать 15 мм");
                 else
                     _isolatorLength = value;
+            }
+        }
+
+        /// <summary>
+        /// Длина гофрированного цоколя
+        /// </summary>
+        private double _plinthLength;
+        public double PlinthLength
+        {
+            get { return _plinthLength; }
+            set
+            {
+                if (value < 25 || value > 35)
+                    throw new Exception("Длина гофрированного цоколя не должна быть меньше 25 мм и превышать 35 мм");
+                else
+                    _plinthLength = value;
             }
         }
     }

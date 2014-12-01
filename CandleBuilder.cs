@@ -11,19 +11,21 @@ using System.Diagnostics;
 
 namespace CandleSW
 {
+
+    /// <summary>
+    /// Класс - отрисовщик детали
+    /// </summary>
     class CandleBuilder
     {
 
         public SldWorks SwApp;
         public ModelDoc2 SwModel;
-        public SketchSegment SkSegment;
 
         public List<string> _detailNames = new List<string>();
         private CandleParametrs _parametr = new CandleParametrs();
 
-
         /// <summary>
-        /// Class constructor
+        /// Конструктор класса
         /// </summary>
         public CandleBuilder()
         {
@@ -32,7 +34,7 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Candle builder method
+        /// Метод построения детали
         /// </summary>
         public void BuildCandle(CandleParametrs objParametr)
         {
@@ -41,15 +43,18 @@ namespace CandleSW
             double _nutLength = _parametr.NutLength;
             double _nutSize = _parametr.NutSize;
             double _isolatorLength = _parametr.IsolatorLength;
+            double _chamferRadius = _parametr.ChamferRadius;
 
             /// <summary>
-            /// Call static carving method
+            /// Методы класса CandleCreator
             /// </summary>
             CandleCreator.CreateCarving(_carvingLength, SwApp, SwModel, _detailNames);
-            CandleCreator.CreateNut(_nutLength, _nutSize, SwApp, SwModel, _detailNames, SkSegment);
+            CandleCreator.CreateNut(_nutLength, _nutSize, SwApp, SwModel, _detailNames, _chamferRadius);
             CandleCreator.CreateIsolator(_isolatorLength, SwApp, SwModel, _detailNames);
 
-
+            /// <summary>
+            /// Создание сборки
+            /// </summary>
             AssemblyDoc swAssembly = SwApp.NewAssembly();
             SwModel = ((ModelDoc2)(SwApp.ActiveDoc));
             swAssembly.AddComponent2(_detailNames[2], 0, 0, _nutLength);
@@ -62,6 +67,9 @@ namespace CandleSW
             SwModel.ClearSelection();
             SwModel.EditRebuild3();
 
+            /// <summary>
+            /// Закрытие созданных документов
+            /// </summary>
             SwApp.CloseDoc(_detailNames[0]);
             SwApp.CloseDoc(_detailNames[1]);
             SwApp.CloseDoc(_detailNames[2]);
