@@ -15,7 +15,7 @@ namespace CandleSW
         /// 
         public static void CreateCarving(double carvingLength)
         {
-            string modelName = "C:\\Users\\dafunk\\Desktop\\Изолятор.sldprt";
+            string modelName = "C:\\Users\\dafunk\\Desktop\\Резьба.sldprt";
             CandleBuilder.SwApp.NewPart();
             CandleBuilder.SwModel = CandleBuilder.SwApp.IActiveDoc2;
             CandleBuilder.SwModel.Extension.SelectByID2("Спереди", "PLANE", 0, 0, 0, false, 0, null, 0);
@@ -48,6 +48,23 @@ namespace CandleSW
             CandleBuilder.SkSegment = CandleBuilder.SwModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.008);
             CandleBuilder.SwModel.FeatureManager.FeatureCut3(true, true, false, 0, 0, 0.001, 0.001, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
             
+            CandleBuilder.SwModel.SaveAs(modelName);
+            CandleBuilder._detailNames.Add(modelName);
+        }
+
+        /// <summary>
+        /// Create isolator static method
+        /// </summary>
+        public static void CreateIsolator(double isolatorLength)
+        {
+            string modelName = "C:\\Users\\dafunk\\Desktop\\Изолятор.sldprt";
+            CandleBuilder.SwApp.NewPart();
+            CandleBuilder.SwModel = CandleBuilder.SwApp.IActiveDoc2;
+            CandleBuilder.SwModel.Extension.SelectByID2("Спереди", "PLANE", 0, 0, 0, false, 0, null, 0);
+            CandleBuilder.SwModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.005);
+            CandleBuilder.SwModel.Extension.SelectByID2("Arc1", "SKETCHSEGMENT", 0, 0, 0, false, 0, null, 0);
+            CandleBuilder.SwModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, isolatorLength, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
+
             CandleBuilder.SwModel.SaveAs(modelName);
             CandleBuilder._detailNames.Add(modelName);
         }

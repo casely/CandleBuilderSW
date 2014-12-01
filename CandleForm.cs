@@ -45,6 +45,7 @@ namespace CandleSW
             {
                 _parametr.CarvingLength = Convert.ToDouble(textBox5.Text);
                 _parametr.NutLength = Convert.ToDouble(textBox3.Text);
+                _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
                 _existDetail = true;
             }
             catch (Exception e)

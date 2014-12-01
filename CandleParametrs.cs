@@ -44,5 +44,18 @@ namespace CandleSW
             get { return _nutSize / 1000; }
             set { _nutSize = value; }
         }
+
+        private double _isolatorLength;
+        public double IsolatorLength
+        {
+            get { return _isolatorLength / 1000; }
+            set
+            {
+                if (value < 7 || value > 15)
+                    throw new Exception("Длина изолятора не должна быть меньше 7 мм и превышать 15 мм");
+                else
+                    _isolatorLength = value;
+            }
+        }
     }
 }
