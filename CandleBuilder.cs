@@ -14,11 +14,11 @@ namespace CandleSW
     class CandleBuilder
     {
 
-        public static SldWorks SwApp;
-        public static ModelDoc2 SwModel;
-        public static SketchSegment SkSegment;
+        public SldWorks SwApp;
+        public ModelDoc2 SwModel;
+        public SketchSegment SkSegment;
 
-        public static List<string> _detailNames = new List<string>();
+        public List<string> _detailNames = new List<string>();
         private CandleParametrs _parametr = new CandleParametrs();
 
 
@@ -45,9 +45,9 @@ namespace CandleSW
             /// <summary>
             /// Call static carving method
             /// </summary>
-            CandleCreator.CreateCarving(_carvingLength);
-            CandleCreator.CreateNut(_nutLength, _nutSize);
-            CandleCreator.CreateIsolator(_isolatorLength);
+            CandleCreator.CreateCarving(_carvingLength, SwApp, SwModel, _detailNames);
+            CandleCreator.CreateNut(_nutLength, _nutSize, SwApp, SwModel, _detailNames, SkSegment);
+            CandleCreator.CreateIsolator(_isolatorLength, SwApp, SwModel, _detailNames);
 
 
             AssemblyDoc swAssembly = SwApp.NewAssembly();
