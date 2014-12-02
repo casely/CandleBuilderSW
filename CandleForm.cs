@@ -96,6 +96,7 @@ namespace CandleSW
             textBox4.Text = "8";
             textBox5.Text = "12";
             comboBox1.Text = "16";
+            comboBox2.Text = "M12x1.25";
             radioButton1.Checked = true;
         }
 
@@ -121,6 +122,9 @@ namespace CandleSW
             }
         }
 
+        /// <summary>
+        /// Обработка нажатия на закрытие формы
+        /// </summary>
         private void CandleForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
@@ -140,9 +144,30 @@ namespace CandleSW
             }
         }
 
+        /// <summary>
+        /// Обработка нажатия кнопки запустить sw
+        /// </summary>
         private void button3_Click(object sender, EventArgs e)
         {
             _candle.OpenSW();
+        }
+
+        /// <summary>
+        /// Выбор типа резьбы
+        /// </summary>
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    _parametr.CarvingRadius = 6;
+                    _parametr.PitchSize = 1.25;
+                    break;
+                case 1:
+                    _parametr.CarvingRadius = 7;
+                    _parametr.PitchSize = 1.5;
+                    break;
+            }
         }
     }
 }

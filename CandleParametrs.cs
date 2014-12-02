@@ -32,6 +32,26 @@ namespace CandleSW
         }
 
         /// <summary>
+        /// Размер шага резьбы
+        /// </summary>
+        private double _pitchSize;
+        public double PitchSize
+        {
+            get { return _pitchSize / 1000; }
+            set { _pitchSize = value; }
+        }
+
+        /// <summary>
+        /// Размер шага резьбы
+        /// </summary>
+        private double _carvingRadius;
+        public double CarvingRadius
+        {
+            get { return _carvingRadius / 1000; }
+            set { _carvingRadius = value; }
+        }
+
+        /// <summary>
         /// Длина гайки части
         /// </summary>
         private double _nutLength;

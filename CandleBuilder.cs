@@ -29,13 +29,13 @@ namespace CandleSW
         /// </summary>
         public CandleBuilder()
         {
-            
+            SwApp = new SldWorks();
+            SwApp.Visible = true;
         }
 
         public void OpenSW()
         {
-            SwApp = new SldWorks();
-            SwApp.Visible = true;
+            
         }
 
         /// <summary>
@@ -51,11 +51,13 @@ namespace CandleSW
             double chamferRadius = _parametr.ChamferRadius;
             double plinthLength = _parametr.PlinthLength;
             double headLength = _parametr.HeadLength;
+            double pitchSize = _parametr.PitchSize;
+            double carvingRadius = _parametr.CarvingRadius;
 
             /// <summary>
             /// Методы класса CandleCreator
             /// </summary>
-            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames);
+            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames, pitchSize, carvingRadius);
             CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius);
             CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames);
             CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames);
@@ -71,7 +73,7 @@ namespace CandleSW
             SwModel = ((ModelDoc2)(SwApp.ActiveDoc));
 
             swAssembly.AddComponent2(_detailNames[3], 0, 0, plinthLength / 2 + carvingLength + isolatorLength + nutLength);
-            swAssembly.AddComponent(_detailNames[0], 0, 0, carvingLength / 2);
+            swAssembly.AddComponent(_detailNames[0], 0, 0, carvingLength / 2 );
             swAssembly.AddComponent(_detailNames[2], 0, 0, isolatorLength / 2 + carvingLength);
             swAssembly.AddComponent2(_detailNames[1], 0, 0, nutLength / 2 + carvingLength + isolatorLength);
             swAssembly.AddComponent2(_detailNames[4], 0, 0, headLength / 2 + plinthLength + carvingLength + isolatorLength + nutLength);
