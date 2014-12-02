@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace CandleSW
 {
@@ -30,10 +31,9 @@ namespace CandleSW
         /// </summary>
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            ReadTextBox();
-            if (_existDetail == true)
-                _candle.BuildCandle(_parametr);
+                ReadTextBox();
+                if (_existDetail == true)
+                    _candle.BuildCandle(_parametr);
         }
 
         /// <summary>
@@ -46,6 +46,8 @@ namespace CandleSW
                 _parametr.CarvingLength = Convert.ToDouble(textBox5.Text);
                 _parametr.NutLength = Convert.ToDouble(textBox3.Text);
                 _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
+                _parametr.PlinthLength = Convert.ToDouble(textBox2.Text);
+                _parametr.HeadLength = Convert.ToDouble(textBox1.Text);
                 _existDetail = true;
             }
             catch (Exception e)
@@ -67,6 +69,7 @@ namespace CandleSW
                 label2.Visible = true;
                 label3.Visible = true;
                 groupBox1.Size = new System.Drawing.Size(215, 105);
+                _parametr.ExistHead = true;
             }
         }
 
@@ -78,6 +81,7 @@ namespace CandleSW
                 label2.Visible = false;
                 label3.Visible = false;
                 groupBox1.Size = new System.Drawing.Size(215, 90);
+                _parametr.ExistHead = false;
             }
         }
 
@@ -92,6 +96,7 @@ namespace CandleSW
             textBox4.Text = "8";
             textBox5.Text = "12";
             comboBox1.Text = "16";
+            radioButton1.Checked = true;
         }
 
         /// <summary>
@@ -114,6 +119,30 @@ namespace CandleSW
                     _parametr.ChamferRadius = 0.01;
                     break;
             }
+        }
+
+        private void CandleForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
+            if (DialogResult.Yes == MessageBox.Show("Вы действительно хотите выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation))
+            {
+                _candle.SwApp.ExitApp();
+                _candle.SwApp = null;
+                Process[] processes = Process.GetProcessesByName("SLDWORKS");
+                foreach (Process process in processes)
+                {
+                    process.Kill();
+                }
+            }
+            else
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            _candle.OpenSW();
         }
     }
 }

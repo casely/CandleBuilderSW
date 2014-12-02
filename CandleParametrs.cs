@@ -13,6 +13,8 @@ namespace CandleSW
     public class CandleParametrs
     {
 
+        public bool ExistHead = true;
+
         /// <summary>
         /// Длина резьбовой части
         /// </summary>
@@ -87,13 +89,32 @@ namespace CandleSW
         private double _plinthLength;
         public double PlinthLength
         {
-            get { return _plinthLength; }
+            get { return _plinthLength / 1000; }
             set
             {
                 if (value < 25 || value > 35)
                     throw new Exception("Длина гофрированного цоколя не должна быть меньше 25 мм и превышать 35 мм");
                 else
                     _plinthLength = value;
+            }
+        }
+
+        /// <summary>
+        /// Длина головки
+        /// </summary>
+        private double _headLength;
+        public double HeadLength
+        {
+            get
+            {
+                return _headLength / 1000;
+            }
+            set
+            {
+                if (value < 4 || value > 10)
+                    throw new Exception("Длина контактной головки не должна быть меньше 4 мм и превышать 10 мм");
+                else
+                    _headLength = value;
             }
         }
     }
