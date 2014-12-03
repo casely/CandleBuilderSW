@@ -48,6 +48,9 @@ namespace CandleSW
                 _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
                 _parametr.PlinthLength = Convert.ToDouble(textBox2.Text);
                 _parametr.HeadLength = Convert.ToDouble(textBox1.Text);
+                _parametr.TextEtching = Convert.ToString(textBox9.Text);
+                _parametr.ElectrodeLength = Convert.ToDouble(textBox6.Text);
+                _parametr.GapValue = Convert.ToDouble(textBox6.Text);
                 _existDetail = true;
             }
             catch (Exception e)
@@ -90,13 +93,16 @@ namespace CandleSW
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            textBox1.Text= "5";
+            textBox1.Text= "8";
             textBox2.Text = "30";
-            textBox3.Text = "5";
+            textBox3.Text = "9";
             textBox4.Text = "8";
             textBox5.Text = "12";
+            textBox6.Text = "1";
+            textBox7.Text = "1";
             comboBox1.Text = "16";
             comboBox2.Text = "M12x1.25";
+            textBox9.Text = "DENSO";
             radioButton1.Checked = true;
         }
 
@@ -157,10 +163,10 @@ namespace CandleSW
         /// </summary>
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox1.SelectedIndex)
+            switch (comboBox2.SelectedIndex)
             {
                 case 0:
-                    _parametr.CarvingRadius = 6;
+                    _parametr.CarvingRadius = 5;
                     _parametr.PitchSize = 1.25;
                     break;
                 case 1:
@@ -169,5 +175,6 @@ namespace CandleSW
                     break;
             }
         }
+
     }
 }

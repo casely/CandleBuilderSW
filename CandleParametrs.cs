@@ -60,8 +60,8 @@ namespace CandleSW
             get { return _nutLength / 1000; }
             set
             {
-                if (value < 4 || value > 10)
-                    throw new Exception("Высота гайки не должна быть меньше 4 мм и превышать 10 мм");
+                if (value < 8 || value > 13)
+                    throw new Exception("Высота гайки не должна быть меньше 8 мм и превышать 13 мм");
                 else
                     _nutLength = value;
             }
@@ -131,10 +131,64 @@ namespace CandleSW
             }
             set
             {
-                if (value < 4 || value > 10)
-                    throw new Exception("Длина контактной головки не должна быть меньше 4 мм и превышать 10 мм");
+                if (value < 8 || value > 11)
+                    throw new Exception("Длина контактной головки не должна быть меньше 8 мм и превышать 11 мм");
                 else
                     _headLength = value;
+            }
+        }
+
+        /// <summary>
+        /// Текст гравировки
+        /// </summary>
+        private string _textEtching;
+        public string TextEtching
+        {
+            get
+            {
+                return _textEtching;
+            }
+            set
+            {
+                _textEtching = value;
+            }
+        }
+
+        /// <summary>
+        /// Длина электрода
+        /// </summary>
+        private double _electrodeLength;
+        public double ElectrodeLength
+        {
+            get
+            {
+                return _electrodeLength / 1000;
+            }
+            set
+            {
+                if (value < 1 || value > 3)
+                    throw new Exception("Длина электрода не должна быть меньше 1 мм и превышать 3 мм");
+                else
+                    _electrodeLength = value;
+            }
+        }
+
+        /// <summary>
+        /// Величина зазора
+        /// </summary>
+        private double _gapValue;
+        public double GapValue
+        {
+            get
+            {
+                return _gapValue / 1000;
+            }
+            set
+            {
+                if (value < 1 || value > 3)
+                    throw new Exception("Величина зазора не должна быть меньше 1 мм и превышать 3 мм");
+                else
+                    _gapValue = value;
             }
         }
     }
