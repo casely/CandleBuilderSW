@@ -24,6 +24,8 @@ namespace CandleSW
         public CandleForm()
         {
             InitializeComponent();
+            label20.Visible = false;
+            label18.Visible = false;
         }
 
         /// <summary>
@@ -47,10 +49,11 @@ namespace CandleSW
                 _parametr.NutLength = Convert.ToDouble(textBox3.Text);
                 _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
                 _parametr.PlinthLength = Convert.ToDouble(textBox2.Text);
-                _parametr.HeadLength = Convert.ToDouble(textBox1.Text);
+                if (_parametr.ExistHead == true)
+                {
+                    _parametr.HeadLength = Convert.ToDouble(textBox1.Text);
+                }
                 _parametr.TextEtching = Convert.ToString(textBox9.Text);
-                _parametr.ElectrodeLength = Convert.ToDouble(textBox6.Text);
-                _parametr.GapValue = Convert.ToDouble(textBox6.Text);
                 _existDetail = true;
             }
             catch (Exception e)
@@ -98,8 +101,7 @@ namespace CandleSW
             textBox3.Text = "9";
             textBox4.Text = "8";
             textBox5.Text = "12";
-            textBox6.Text = "1";
-            textBox7.Text = "1";
+            comboBox3.Text = "2";
             comboBox1.Text = "16";
             comboBox2.Text = "M12x1.25";
             textBox9.Text = "DENSO";
@@ -151,14 +153,6 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Обработка нажатия кнопки запустить sw
-        /// </summary>
-        private void button3_Click(object sender, EventArgs e)
-        {
-            _candle.OpenSW();
-        }
-
-        /// <summary>
         /// Выбор типа резьбы
         /// </summary>
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -175,6 +169,32 @@ namespace CandleSW
                     break;
             }
         }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBox3.SelectedIndex)
+            {
+                case 0:
+                    label20.Visible = true;
+                    label18.Visible = true;
+                    _parametr.ElectrodeLength = 1;
+                    label20.Text = "3";
+                    break;
+                case 1:
+                    label20.Visible = true;
+                    label18.Visible = true;
+                    _parametr.ElectrodeLength = 2;
+                    label20.Text = "2";
+                    break;
+                case 2:
+                    label20.Visible = true;
+                    label18.Visible = true;
+                    _parametr.ElectrodeLength = 3;
+                    label20.Text = "1";
+                    break;
+            }
+        }
+
 
     }
 }

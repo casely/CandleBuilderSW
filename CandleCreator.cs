@@ -67,13 +67,39 @@ namespace CandleSW
             swModel.Extension.SelectByID2("", "FACE", 0, 0, carvingLength + 0.003, false, 0, null, 0);
             swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.001);
             swModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, electrodeLength, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
-            
-            // Скрытие плоскости
-            swModel.Extension.SelectByID2("", "PLANE", 0, 0, carvingLength, false, 0, null, 0);
-            swModel.BlankRefGeom();
 
+            // Создание второго электрода
+            swModel.Extension.SelectByID2("Справа", "PLANE", 0, 0, 0, false, 0, null, 0);
+            swModel.FeatureManager.InsertRefPlane(8, 0.001, 0, 0, 0, 0);
+
+            swModel.Extension.SelectByID2("Сверху", "PLANE", 0, 0, 0, false, 0, null, 0);
+            swModel.FeatureManager.InsertRefPlane(8, 0, 0, 0, 0, 0);
+
+            swModel.Extension.SelectByID2("Плоскость5", "PLANE", 0, 0, 0, false, 0, null, 0);
+            swModel.SketchManager.CreateCornerRectangle(-carvingLength - 0.008, 0.001, 0, -carvingLength - 0.007, -0.001, 0);
+            swModel.SketchManager.InsertSketch(true);
+
+            swModel.Extension.SelectByID2("Плоскость6", "PLANE", 0, 0, 0, false, 0, null, 0);
+            swModel.SketchManager.Create3PointArc(-0.0038, -carvingLength - 0.002, 0, 0.001, -carvingLength - 0.007, 0, -0.004, -carvingLength - 0.003, 0);
+            swModel.SketchManager.InsertSketch(true);
+
+            swModel.Extension.SelectByID2("Эскиз8", "SKETCH", 0, 0, 0, true, 0, null, 0);
+            swModel.Extension.SelectByID2("Эскиз9", "SKETCH", 0, 0, 0, true, 0, null, 0);
+
+            swModel.FeatureManager.InsertProtrusionSwept3(false, false, 0, false, false, 0, 0, false, 0, 0, 0, 0, true, true, true, 0, false);
+
+            swModel.Extension.SelectByID2("Деталь3.SLDPRT", "COMPONENT", 0, 0, 0, false, 0, null, 0);
+            (swModel as IPartDoc).SetMaterialPropertyName2("AddHoles", "solidworks materials.sldmat", "Alloy Steel");
+
+            swModel.Extension.SelectByID2("Деталь3.SLDPRT", "COMPONENT", 0, 0, 0, false, 0, null, 0);
+            (swModel as IPartDoc).SetMaterialPropertyName2("AddHoles", "solidworks materials.sldmat", "Alloy Steel");
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
+
+            
+
+            //var myPart = (PartDoc)swModel;
+            
         }
 
         /// <summary>
@@ -135,6 +161,7 @@ namespace CandleSW
             swModel.Extension.SelectByID2("Плоскость6", "PLANE", 0, 0, 0, false, 0, null, 0);
             swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.006);
             swModel.FeatureManager.FeatureCut3(true, true, false, 0, 0, 0.001, 0.001, true, false, false, false, 0.45, 0.45, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
+            
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
         }
@@ -275,7 +302,6 @@ namespace CandleSW
             swModel.FeatureManager.FeatureCut3(true, false, true, 0, 0, 0.06, 0.06, false, false, false, false, 0.02, 0.02, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
 
             // Создание гайки для головки
-
             swModel.Extension.SelectByID2("Спереди", "PLANE", 0, 0, 0, false, 0, null, 0);
             swModel.FeatureManager.InsertRefPlane(8, headLength, 0, 0, 0, 0);
             swModel.ClearSelection2(true);

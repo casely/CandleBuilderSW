@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CandleSW
 {
-    static class MathCandle
+    public static class MathCandle
     {
 
         /// <summary>

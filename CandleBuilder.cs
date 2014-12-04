@@ -34,11 +34,6 @@ namespace CandleSW
             SwApp.Visible = true;
         }
 
-        public void OpenSW()
-        {
-            
-        }
-
         /// <summary>
         /// Метод построения детали
         /// </summary>
@@ -65,6 +60,7 @@ namespace CandleSW
             CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius);
             CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames);
             CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames, textEtching);
+            
             if (_parametr.ExistHead == true)
             {
                 CandleCreator.CreateHead(headLength, SwApp, SwModel, _detailNames);
@@ -80,7 +76,10 @@ namespace CandleSW
             swAssembly.AddComponent(_detailNames[0], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
             swAssembly.AddComponent(_detailNames[2], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
             swAssembly.AddComponent2(_detailNames[1], 0, 0, nutLength / 2 + headLength + plinthLength);
-            swAssembly.AddComponent2(_detailNames[4], 0, 0, headLength / 2);
+            if (_parametr.ExistHead == true)
+            {
+                swAssembly.AddComponent2(_detailNames[4], 0, 0, headLength / 2);
+            }
 
             SwModel.Extension.SelectByID2("", "FACE", 0, 0, 0, true, 0, null, 0);
             swAssembly.AddMate((int)swMateType_e.swMateCONCENTRIC, (int)swMateAlign_e.swAlignAGAINST, false, 1, 0);
@@ -96,7 +95,10 @@ namespace CandleSW
             SwApp.CloseDoc(_detailNames[1]);
             SwApp.CloseDoc(_detailNames[2]);
             SwApp.CloseDoc(_detailNames[3]);
-            SwApp.CloseDoc(_detailNames[4]);
+            if (_parametr.ExistHead == true)
+            {
+                SwApp.CloseDoc(_detailNames[4]);
+            }
         }
     }
 }

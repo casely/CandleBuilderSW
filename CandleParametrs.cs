@@ -172,24 +172,5 @@ namespace CandleSW
                     _electrodeLength = value;
             }
         }
-
-        /// <summary>
-        /// Величина зазора
-        /// </summary>
-        private double _gapValue;
-        public double GapValue
-        {
-            get
-            {
-                return _gapValue / 1000;
-            }
-            set
-            {
-                if (value < 1 || value > 3)
-                    throw new Exception("Величина зазора не должна быть меньше 1 мм и превышать 3 мм");
-                else
-                    _gapValue = value;
-            }
-        }
     }
 }
