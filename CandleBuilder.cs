@@ -7,32 +7,53 @@ using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swcommands;
 using SolidWorks.Interop.swconst;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 
 namespace CandleSW
 {
-
     /// <summary>
     /// Класс - отрисовщик детали
     /// </summary>
     class CandleBuilder
     {
-
+        #region Fields
+        /// <summary>
+        /// Ссылка на интерфейс SldWorks
+        /// </summary>
         public SldWorks SwApp;
+
+        /// <summary>
+        /// Ссылка на модель
+        /// </summary>
         public ModelDoc2 SwModel;
-        public PartDoc SwPart;
 
+        /// <summary>
+        /// Список названий деталей
+        /// </summary>
         private List<string> _detailNames = new List<string>();
-        private CandleParametrs _parametr = new CandleParametrs();
 
+        /// <summary>
+        /// Создание экземпляра класса параметров
+        /// </summary>
+        private CandleParametrs _parametr = new CandleParametrs();
+       
+        #endregion
+
+        #region Constructor
         /// <summary>
         /// Конструктор класса
         /// </summary>
         public CandleBuilder()
         {
+            /// <summary>
+            /// Запуск SolidWorks
+            /// </summary>
             SwApp = new SldWorks();
             SwApp.Visible = true;
         }
+
+        #endregion
 
         /// <summary>
         /// Метод построения детали
@@ -41,17 +62,21 @@ namespace CandleSW
         {
             _parametr = objParametr;
 
-            double carvingLength = _parametr.CarvingLength;
-            double nutLength = _parametr.NutLength;
-            double nutSize = _parametr.NutSize;
-            double isolatorLength = _parametr.IsolatorLength;
-            double chamferRadius = _parametr.ChamferRadius;
-            double plinthLength = _parametr.PlinthLength;
-            double headLength = _parametr.HeadLength;
-            double pitchSize = _parametr.PitchSize;
-            double carvingRadius = _parametr.CarvingRadius;
-            string textEtching = _parametr.TextEtching;
-            double electrodeLength = _parametr.ElectrodeLength;
+            var carvingLength = _parametr.CarvingLength;
+            var nutLength = _parametr.NutLength;
+            var nutSize = _parametr.NutSize;
+            var isolatorLength = _parametr.IsolatorLength;
+            var chamferRadius = _parametr.ChamferRadius;
+            var plinthLength = _parametr.PlinthLength;
+            var headLength = _parametr.HeadLength;
+            var pitchSize = _parametr.PitchSize;
+            var carvingRadius = _parametr.CarvingRadius;
+            var textEtching = _parametr.TextEtching;
+            var electrodeLength = _parametr.ElectrodeLength;
+
+            _parametr.ExistDetail = true;
+
+            
 
             /// <summary>
             /// Методы класса CandleCreator
@@ -76,6 +101,7 @@ namespace CandleSW
             swAssembly.AddComponent(_detailNames[0], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
             swAssembly.AddComponent(_detailNames[2], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
             swAssembly.AddComponent2(_detailNames[1], 0, 0, nutLength / 2 + headLength + plinthLength);
+            
             if (_parametr.ExistHead == true)
             {
                 swAssembly.AddComponent2(_detailNames[4], 0, 0, headLength / 2);
@@ -95,10 +121,16 @@ namespace CandleSW
             SwApp.CloseDoc(_detailNames[1]);
             SwApp.CloseDoc(_detailNames[2]);
             SwApp.CloseDoc(_detailNames[3]);
+
+            
             if (_parametr.ExistHead == true)
             {
                 SwApp.CloseDoc(_detailNames[4]);
             }
+
+            string modelName = "C:\\Users\\dafunk\\Desktop\\Свеча.SLDASM";
+            SwModel.SaveAs(modelName);
+            
         }
     }
 }

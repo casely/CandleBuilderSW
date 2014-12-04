@@ -95,11 +95,6 @@ namespace CandleSW
             (swModel as IPartDoc).SetMaterialPropertyName2("AddHoles", "solidworks materials.sldmat", "Alloy Steel");
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
-
-            
-
-            //var myPart = (PartDoc)swModel;
-            
         }
 
         /// <summary>
@@ -247,10 +242,18 @@ namespace CandleSW
             swModel.ClearSelection2(true);
 
             // Создание текста
+
             swModel.Extension.SelectByID2("Сверху", "PLANE", 0, 0, 0, false, 0, null, 0);
+            swModel.FeatureManager.InsertRefPlane(8, 0.006, 0, 0, 0, 0);
+
+            swModel.Extension.SelectByID2("Плоскость4", "PLANE", 0, 0, 0, false, 0, null, 0);
             swModel.InsertSketchText(-0.003, -plinthLength + 0.002, 0, textEtching, 0, 0, 0, 40, 100);
-            swModel.Extension.SelectByID2("Эскиз9", "SKETCH", 0, 0, 0, true, 0, null, 0);
-            swModel.FeatureManager.FeatureCut3(true, false, true, 0, 0, 0.05, 0.05, false, false, false, false, 0.017, 0.017, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
+            
+            swModel.SketchManager.InsertSketch(true);
+            swModel.Extension.SelectByID2("Эскиз9", "SKETCH", 0, 0, 0, false, 4, null, 0);
+            swModel.Extension.SelectByID2("", "FACE", 0.0049512146013057645, 0.00069675962259907465, 0.020106736684624593, true, 1, null, 0);
+            swModel.FeatureManager.InsertWrapFeature(1, 0.001, false);
+            //swModel.FeatureManager.FeatureCut3(true, false, true, 0, 0, 0.05, 0.05, false, false, false, false, 0.017, 0.017, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
 
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);

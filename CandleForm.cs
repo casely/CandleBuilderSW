@@ -16,7 +16,8 @@ namespace CandleSW
 
         CandleParametrs _parametr = new CandleParametrs();
         CandleBuilder _candle = new CandleBuilder();
-        bool _existDetail = false;
+        private bool _checkDetail = false;
+
 
         /// <summary>
         /// Конструктор формы
@@ -26,6 +27,8 @@ namespace CandleSW
             InitializeComponent();
             label20.Visible = false;
             label18.Visible = false;
+            label17.Visible = false;
+            textBox9.MaxLength = 10;
         }
 
         /// <summary>
@@ -34,8 +37,14 @@ namespace CandleSW
         private void button1_Click(object sender, EventArgs e)
         {
                 ReadTextBox();
-                if (_existDetail == true)
+                if (_checkDetail == true)
+                {
+                    if (_parametr.ExistDetail)
+                    {
+                        _candle.SwApp.CloseDoc("Свеча");
+                    }
                     _candle.BuildCandle(_parametr);
+                }
         }
 
         /// <summary>
@@ -49,18 +58,16 @@ namespace CandleSW
                 _parametr.NutLength = Convert.ToDouble(textBox3.Text);
                 _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
                 _parametr.PlinthLength = Convert.ToDouble(textBox2.Text);
-                if (_parametr.ExistHead == true)
-                {
-                    _parametr.HeadLength = Convert.ToDouble(textBox1.Text);
-                }
+                
                 _parametr.TextEtching = Convert.ToString(textBox9.Text);
-                _existDetail = true;
+                _checkDetail = true;
+                    
             }
             catch (Exception e)
             {
                 DialogResult res = MessageBox.Show(e.Message,"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 if (res == DialogResult.OK)
-                    _existDetail = false;
+                    _checkDetail = false;
             }
         }
 
@@ -177,24 +184,25 @@ namespace CandleSW
                 case 0:
                     label20.Visible = true;
                     label18.Visible = true;
+                    label17.Visible = true;
                     _parametr.ElectrodeLength = 1;
                     label20.Text = "3";
                     break;
                 case 1:
                     label20.Visible = true;
                     label18.Visible = true;
+                    label17.Visible = true;
                     _parametr.ElectrodeLength = 2;
                     label20.Text = "2";
                     break;
                 case 2:
                     label20.Visible = true;
                     label18.Visible = true;
+                    label17.Visible = true;
                     _parametr.ElectrodeLength = 3;
                     label20.Text = "1";
                     break;
             }
         }
-
-
     }
 }

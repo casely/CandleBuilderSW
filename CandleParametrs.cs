@@ -14,6 +14,7 @@ namespace CandleSW
     {
 
         public bool ExistHead = true;
+        public bool ExistDetail = false;
 
         /// <summary>
         /// Длина резьбовой части
@@ -150,6 +151,7 @@ namespace CandleSW
             }
             set
             {
+
                 _textEtching = value;
             }
         }
