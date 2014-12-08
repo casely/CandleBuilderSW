@@ -9,7 +9,6 @@ using SolidWorks.Interop.swconst;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-
 namespace CandleSW
 {
     /// <summary>
@@ -55,13 +54,25 @@ namespace CandleSW
 
         #endregion
 
+        #region Methods
         /// <summary>
         /// Метод построения детали
         /// </summary>
         public void BuildCandle(CandleParametrs objParametr)
         {
+            /// <summary>
+            /// Экземпляру присваиваем значение объекта класса
+            /// </summary>
             _parametr = objParametr;
 
+            /// <summary>
+            /// Проверка построена ли деталь
+            /// </summary>
+            _parametr.ExistDetail = true;
+
+            /// <summary>
+            /// Присваивание параметров
+            /// </summary>
             var carvingLength = _parametr.CarvingLength;
             var nutLength = _parametr.NutLength;
             var nutSize = _parametr.NutSize;
@@ -74,43 +85,38 @@ namespace CandleSW
             var textEtching = _parametr.TextEtching;
             var electrodeLength = _parametr.ElectrodeLength;
 
-            _parametr.ExistDetail = true;
-
-            
-
             /// <summary>
             /// Методы класса CandleCreator
             /// </summary>
-            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames, pitchSize, carvingRadius, electrodeLength);
-            CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius);
-            CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames);
-            CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames, textEtching);
-            
             if (_parametr.ExistHead == true)
             {
                 CandleCreator.CreateHead(headLength, SwApp, SwModel, _detailNames);
             }
-            
+            CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames, textEtching);
+            CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius);
+            CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames);
+            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames, pitchSize, carvingRadius, electrodeLength);
+
             /// <summary>
             /// Создание сборки
             /// </summary>
             AssemblyDoc swAssembly = SwApp.NewAssembly();
             SwModel = ((ModelDoc2)(SwApp.ActiveDoc));
-
-            swAssembly.AddComponent2(_detailNames[3], 0, 0, plinthLength / 2 + headLength);
-            swAssembly.AddComponent(_detailNames[0], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
-            swAssembly.AddComponent(_detailNames[2], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
-            swAssembly.AddComponent2(_detailNames[1], 0, 0, nutLength / 2 + headLength + plinthLength);
-            
             if (_parametr.ExistHead == true)
             {
-                swAssembly.AddComponent2(_detailNames[4], 0, 0, headLength / 2);
+                swAssembly.AddComponent2(_detailNames[0], 0, 0, headLength / 2);
             }
+            swAssembly.AddComponent2(_detailNames[1], 0, 0, plinthLength / 2 + headLength);
+            swAssembly.AddComponent2(_detailNames[2], 0, 0, nutLength / 2 + headLength + plinthLength);
+            swAssembly.AddComponent(_detailNames[3], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
+            swAssembly.AddComponent(_detailNames[4], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
 
+            /// <summary>
+            /// Выбор вида "Изометрия"
+            /// </summary>
             SwModel.Extension.SelectByID2("", "FACE", 0, 0, 0, true, 0, null, 0);
             swAssembly.AddMate((int)swMateType_e.swMateCONCENTRIC, (int)swMateAlign_e.swAlignAGAINST, false, 1, 0);
             SwModel.ShowNamedView("*Изометрия");
-            SwModel.ViewZoomToSelection();
             SwModel.ClearSelection();
             SwModel.EditRebuild3();
 
@@ -121,16 +127,19 @@ namespace CandleSW
             SwApp.CloseDoc(_detailNames[1]);
             SwApp.CloseDoc(_detailNames[2]);
             SwApp.CloseDoc(_detailNames[3]);
-
-            
             if (_parametr.ExistHead == true)
             {
                 SwApp.CloseDoc(_detailNames[4]);
             }
 
+            /// <summary>
+            /// Сохранение сборки
+            /// </summary>
             string modelName = "C:\\Users\\dafunk\\Desktop\\Свеча.SLDASM";
             SwModel.SaveAs(modelName);
-            
         }
+
+        #endregion
+
     }
 }

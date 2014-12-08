@@ -6,14 +6,19 @@ using System.Threading.Tasks;
 
 namespace CandleSW
 {
-
     /// <summary>
     /// Класс хранящий параметры детали
     /// </summary>
     public class CandleParametrs
     {
-
+        /// <summary>
+        /// Наличие головки
+        /// </summary>
         public bool ExistHead = true;
+
+        /// <summary>
+        /// Наличие детали
+        /// </summary>
         public bool ExistDetail = false;
 
         /// <summary>

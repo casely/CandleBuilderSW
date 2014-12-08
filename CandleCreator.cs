@@ -9,19 +9,19 @@ using SolidWorks.Interop.swconst;
 
 namespace CandleSW
 {
-    
     /// <summary>
     /// Статический класс для создания частей детали
     /// </summary>
     /// 
     public static class CandleCreator
     {
-
+        #region CreateCarving
         /// <summary>
         /// Создание резьбовой части
         /// </summary>
         public static void CreateCarving(double carvingLength, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames, double pitchSize, double carvingRadius, double electrodeLength)
         {
+            //TODO: Сделать красиво
             string modelName = "C:\\Users\\dafunk\\Desktop\\Резьба.sldprt";
             swApp.NewPart();
             swModel = swApp.IActiveDoc2;
@@ -93,15 +93,20 @@ namespace CandleSW
 
             swModel.Extension.SelectByID2("Деталь3.SLDPRT", "COMPONENT", 0, 0, 0, false, 0, null, 0);
             (swModel as IPartDoc).SetMaterialPropertyName2("AddHoles", "solidworks materials.sldmat", "Alloy Steel");
+            
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
         }
 
+        #endregion
+
+        #region CreateNut
         /// <summary>
         /// Создание гайки
         /// </summary>
         public static void CreateNut(double nutLength, double nutSize, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames, double chamferRadius)
         {
+            //TODO: Сделать красиво
             string modelName = "C:\\Users\\dafunk\\Desktop\\Болт.sldprt";
             Array vSkLines = null;
             swApp.NewPart();
@@ -124,7 +129,8 @@ namespace CandleSW
             
             // Гайка
             swModel.Extension.SelectByID2("Плоскость4", "PLANE", 0, 0, 0, false, 0, null, 0);
-            vSkLines = swModel.SketchManager.CreatePolygon(0, 0, 0, 0, MathCandle.GetPolygonRadius(nutSize), 0, 6, true);
+            vSkLines = swModel.SketchManager.CreatePolygon(0, 0, 0, 0, CandleMathHelper.GetPolygonRadius(nutSize), 0, 6, true);
+            double a = CandleMathHelper.GetPolygonRadius(nutSize);
             swModel.Extension.SelectByID2("Arc1", "SKETCHSEGMENT", 0, 0, 0, false, 0, null, 0);
             swModel.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, nutLength - 0.003, 0, false, false, false, false, 1.745, 1.745, false, false, false, false, true, true, true, 0, 0, false);
             
@@ -161,6 +167,9 @@ namespace CandleSW
             detailNames.Add(modelName);
         }
 
+        #endregion
+
+        #region CreateIsolator
         /// <summary>
         /// Создание изолятора
         /// </summary>
@@ -180,15 +189,23 @@ namespace CandleSW
             swModel.SketchManager.CreateCircleByRadius(0, 0, 0, 0.006);
             swModel.FeatureManager.FeatureCut3(true, true, true, 0, 0, 0.01, 0.01, true, false, false, false, 1.1, 1.1, false, false, false, false, false, true, true, true, true, false, 0, 0, false);
 
+            //TODO: Сделать красиво
+            swModel.Extension.SelectByID2("", "FACE", 0.006314046316731492, 0.0049125165760415257, 0.0045698675447738424, false, 0, null, 0);
+            //((PartDoc)swModel).SetMaterialPropertyName2("", "solidworks materials.sldmat", "Ductile Iron");
+
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
         }
 
+        #endregion
+
+        #region CreatePlinth
         /// <summary>
         /// Создание гофрированного цоколя
         /// </summary>
         public static void CreatePlinth(double plinthLength, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames, string textEtching)
         {
+            //TODO: Сделать красиво
             string modelName = "C:\\Users\\dafunk\\Desktop\\Гофра.sldprt";
             swApp.NewPart();
             swModel = swApp.IActiveDoc2;
@@ -259,11 +276,15 @@ namespace CandleSW
             detailNames.Add(modelName);
         }
 
+        #endregion
+
+        #region CreateHead
         /// <summary>
         /// Создание головки
         /// </summary>
         public static void CreateHead(double headLength, SldWorks swApp, ModelDoc2 swModel, List<string> detailNames)
         {
+            //TODO: Поменять pathname и переменные 
             string modelName = "C:\\Users\\dafunk\\Desktop\\Головка.sldprt";
             swApp.NewPart();
             swModel = swApp.IActiveDoc2;
@@ -318,5 +339,8 @@ namespace CandleSW
             swModel.SaveAs(modelName);
             detailNames.Add(modelName);
         }
+
+        #endregion
+
     }
 }

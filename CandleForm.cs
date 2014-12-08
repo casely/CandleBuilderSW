@@ -11,26 +11,45 @@ using System.Diagnostics;
 
 namespace CandleSW
 {
+    /// <summary>
+    /// Класс - форма
+    /// </summary>
     public partial class CandleForm : Form
     {
+        #region Fields
+        /// <summary>
+        /// Экземпляр класса CandleParametrs
+        /// </summary>
+        private CandleParametrs _parametr = new CandleParametrs();
 
-        CandleParametrs _parametr = new CandleParametrs();
-        CandleBuilder _candle = new CandleBuilder();
+        /// <summary>
+        /// Экземпляр класса CandleBuilder
+        /// </summary>
+        private CandleBuilder _candle = new CandleBuilder();
+        
+        /// <summary>
+        /// Наличие детали
+        /// </summary>
         private bool _checkDetail = false;
 
+        #endregion
 
+        #region Constructor
         /// <summary>
         /// Конструктор формы
         /// </summary>
         public CandleForm()
         {
             InitializeComponent();
-            label20.Visible = false;
-            label18.Visible = false;
-            label17.Visible = false;
-            textBox9.MaxLength = 10;
+            // Скрытие label
+            LabelHiding();
+            // Задаем максимальную длину в гравировке
+            etching.MaxLength = 10;
         }
 
+        #endregion
+
+        #region FormMethods
         /// <summary>
         /// Обработчик нажатия на кнопку построить
         /// </summary>
@@ -48,49 +67,22 @@ namespace CandleSW
         }
 
         /// <summary>
-        /// Метод считывающий данные с полей
-        /// </summary>
-        private void ReadTextBox()
-        {
-            try
-            {
-                _parametr.CarvingLength = Convert.ToDouble(textBox5.Text);
-                _parametr.NutLength = Convert.ToDouble(textBox3.Text);
-                _parametr.IsolatorLength = Convert.ToDouble(textBox4.Text);
-                _parametr.PlinthLength = Convert.ToDouble(textBox2.Text);
-                
-                _parametr.TextEtching = Convert.ToString(textBox9.Text);
-                _checkDetail = true;
-                    
-            }
-            catch (Exception e)
-            {
-                DialogResult res = MessageBox.Show(e.Message,"Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                if (res == DialogResult.OK)
-                    _checkDetail = false;
-            }
-        }
-
-        /// <summary>
         /// Обработчик выбора
         /// </summary>
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (radioButton1.Checked)
+            if (yesRadioButton.Checked)
             {
-                textBox1.Visible = true;
+                headLength.Visible = true;
                 label2.Visible = true;
                 label3.Visible = true;
                 groupBox1.Size = new System.Drawing.Size(215, 105);
                 _parametr.ExistHead = true;
             }
-        }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (radioButton2.Checked)
+            if (noRadioButton.Checked)
             {
-                textBox1.Visible = false;
+                headLength.Visible = false;
                 label2.Visible = false;
                 label3.Visible = false;
                 groupBox1.Size = new System.Drawing.Size(215, 90);
@@ -103,16 +95,28 @@ namespace CandleSW
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-            textBox1.Text= "8";
-            textBox2.Text = "30";
-            textBox3.Text = "9";
-            textBox4.Text = "8";
-            textBox5.Text = "12";
-            comboBox3.Text = "2";
-            comboBox1.Text = "16";
-            comboBox2.Text = "M12x1.25";
-            textBox9.Text = "DENSO";
-            radioButton1.Checked = true;
+           
+            //List<TextBox> obj = new List<TextBox> { headLength, plinthLength };
+            //Initialize();
+            //TODO: По умолчанию хранить как структуру
+            headLength.Text= "8";
+            plinthLength.Text = "30";
+            nutLength.Text = "9";
+            isolatorLength.Text = "8";
+            carvingLength.Text = "12";
+            electrodeLength.Text = "2";
+            sizeNut.Text = "16";
+            carvingType.Text = "M12x1.25";
+            etching.Text = "DENSO";
+            yesRadioButton.Checked = true;
+        }
+
+        //public Dictionary<TextBox, string> Parameters { get; private set; }
+
+        private void Initialize()
+        {
+            
+
         }
 
         /// <summary>
@@ -120,21 +124,7 @@ namespace CandleSW
         /// </summary>
         private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            switch (comboBox1.SelectedIndex)
-            {
-                case 0:
-                    _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
-                    _parametr.ChamferRadius = 0.008;
-                    break;
-                case 1:
-                    _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
-                    _parametr.ChamferRadius = 0.0095;
-                    break;
-                case 2:
-                    _parametr.NutSize = Convert.ToDouble(comboBox1.Text);
-                    _parametr.ChamferRadius = 0.01;
-                    break;
-            }
+            ChoiseNutSize();
         }
 
         /// <summary>
@@ -164,45 +154,125 @@ namespace CandleSW
         /// </summary>
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (comboBox2.SelectedIndex)
+            ChooseTypeOfCarving();
+        }
+
+        /// <summary>
+        /// Выбор длины электрода
+        /// </summary>
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            label20.Visible = true;
+            label18.Visible = true;
+            label17.Visible = true;
+            ChooseLengthOfElectrode();
+            
+        }
+
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Метод считывающий данные с полей
+        /// </summary>
+        private void ReadTextBox()
+        {
+            try
+            {
+                _parametr.CarvingLength = Convert.ToDouble(carvingLength.Text);
+                _parametr.NutLength = Convert.ToDouble(nutLength.Text);
+                _parametr.IsolatorLength = Convert.ToDouble(isolatorLength.Text);
+                _parametr.PlinthLength = Convert.ToDouble(plinthLength.Text);
+                if (_parametr.ExistHead == true)
+                {
+                    _parametr.HeadLength = Convert.ToDouble(headLength.Text);
+                }
+                _parametr.TextEtching = Convert.ToString(etching.Text);
+                _checkDetail = true;
+
+            }
+            catch (Exception e)
+            {
+                DialogResult res = MessageBox.Show(e.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (res == DialogResult.OK)
+                    _checkDetail = false;
+            }
+        }
+
+        /// <summary>
+        /// Выбор типа резьбы
+        /// </summary>
+        private void ChooseTypeOfCarving()
+        {
+            switch (carvingType.SelectedIndex)
             {
                 case 0:
                     _parametr.CarvingRadius = 5;
                     _parametr.PitchSize = 1.25;
                     break;
                 case 1:
-                    _parametr.CarvingRadius = 7;
+                    _parametr.CarvingRadius = 5;
                     _parametr.PitchSize = 1.5;
                     break;
             }
         }
 
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Выбор длины электрода
+        /// </summary>
+        private void ChooseLengthOfElectrode()
         {
-            switch (comboBox3.SelectedIndex)
+            switch (electrodeLength.SelectedIndex)
             {
                 case 0:
-                    label20.Visible = true;
-                    label18.Visible = true;
-                    label17.Visible = true;
                     _parametr.ElectrodeLength = 1;
                     label20.Text = "3";
                     break;
                 case 1:
-                    label20.Visible = true;
-                    label18.Visible = true;
-                    label17.Visible = true;
                     _parametr.ElectrodeLength = 2;
                     label20.Text = "2";
                     break;
                 case 2:
-                    label20.Visible = true;
-                    label18.Visible = true;
-                    label17.Visible = true;
                     _parametr.ElectrodeLength = 3;
                     label20.Text = "1";
                     break;
             }
         }
+
+        /// <summary>
+        /// Выбор размера гайки
+        /// </summary>
+        private void ChoiseNutSize()
+        {
+            switch (sizeNut.SelectedIndex)
+            {
+                case 0:
+                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
+                    _parametr.ChamferRadius = 0.008;
+                    break;
+                case 1:
+                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
+                    _parametr.ChamferRadius = 0.0095;
+                    break;
+                case 2:
+                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
+                    _parametr.ChamferRadius = 0.01;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Скрытие надписей
+        /// </summary>
+        private void LabelHiding()
+        {
+            // Скрываем label
+            label20.Visible = false;
+            label18.Visible = false;
+            label17.Visible = false;
+        }
+
+        #endregion
+
     }
 }
