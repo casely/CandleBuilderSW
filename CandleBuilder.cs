@@ -71,6 +71,11 @@ namespace CandleSW
             _parametr.ExistDetail = true;
 
             /// <summary>
+            /// Путь до рабочего стола
+            /// </summary>
+            var pathName = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+
+            /// <summary>
             /// Присваивание параметров
             /// </summary>
             var carvingLength = _parametr.CarvingLength;
@@ -90,12 +95,12 @@ namespace CandleSW
             /// </summary>
             if (_parametr.ExistHead == true)
             {
-                CandleCreator.CreateHead(headLength, SwApp, SwModel, _detailNames);
+                CandleCreator.CreateHead(headLength, SwApp, SwModel, _detailNames, pathName);
             }
-            CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames, textEtching);
-            CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius);
-            CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames);
-            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames, pitchSize, carvingRadius, electrodeLength);
+            CandleCreator.CreatePlinth(plinthLength, SwApp, SwModel, _detailNames, textEtching, pathName);
+            CandleCreator.CreateNut(nutLength, nutSize, SwApp, SwModel, _detailNames, chamferRadius, pathName);
+            CandleCreator.CreateIsolator(isolatorLength, SwApp, SwModel, _detailNames, pathName);
+            CandleCreator.CreateCarving(carvingLength, SwApp, SwModel, _detailNames, pitchSize, carvingRadius, electrodeLength, pathName);
 
             /// <summary>
             /// Создание сборки
@@ -105,12 +110,18 @@ namespace CandleSW
             if (_parametr.ExistHead == true)
             {
                 swAssembly.AddComponent2(_detailNames[0], 0, 0, headLength / 2);
+                swAssembly.AddComponent2(_detailNames[1], 0, 0, plinthLength / 2 + headLength);
+                swAssembly.AddComponent2(_detailNames[2], 0, 0, nutLength / 2 + headLength + plinthLength);
+                swAssembly.AddComponent(_detailNames[3], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
+                swAssembly.AddComponent(_detailNames[4], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
             }
-            swAssembly.AddComponent2(_detailNames[1], 0, 0, plinthLength / 2 + headLength);
-            swAssembly.AddComponent2(_detailNames[2], 0, 0, nutLength / 2 + headLength + plinthLength);
-            swAssembly.AddComponent(_detailNames[3], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
-            swAssembly.AddComponent(_detailNames[4], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
-
+            else
+            {
+                swAssembly.AddComponent2(_detailNames[0], 0, 0, plinthLength / 2 + headLength);
+                swAssembly.AddComponent2(_detailNames[1], 0, 0, nutLength / 2 + headLength + plinthLength);
+                swAssembly.AddComponent(_detailNames[2], 0, 0, isolatorLength / 2 + headLength + plinthLength + nutLength);
+                swAssembly.AddComponent(_detailNames[3], 0, 0, carvingLength / 2 + headLength + plinthLength + isolatorLength + nutLength);
+            }
             /// <summary>
             /// Выбор вида "Изометрия"
             /// </summary>
@@ -135,7 +146,7 @@ namespace CandleSW
             /// <summary>
             /// Сохранение сборки
             /// </summary>
-            string modelName = "C:\\Users\\dafunk\\Desktop\\Свеча.SLDASM";
+            string modelName = pathName + "Свеча.SLDASM";
             SwModel.SaveAs(modelName);
         }
 

@@ -26,6 +26,11 @@ namespace CandleSW
         /// Экземпляр класса CandleBuilder
         /// </summary>
         private CandleBuilder _candle = new CandleBuilder();
+
+        /// <summary>
+        /// Словарь параметров по умолчанию
+        /// </summary>
+        private Dictionary<CandleParametrs.Params, int> _defaultParametr = new Dictionary<CandleParametrs.Params, int>();
         
         /// <summary>
         /// Наличие детали
@@ -71,23 +76,14 @@ namespace CandleSW
         /// </summary>
         private void radioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (yesRadioButton.Checked)
-            {
-                headLength.Visible = true;
-                label2.Visible = true;
-                label3.Visible = true;
-                groupBox1.Size = new System.Drawing.Size(215, 105);
-                _parametr.ExistHead = true;
-            }
-
-            if (noRadioButton.Checked)
-            {
-                headLength.Visible = false;
-                label2.Visible = false;
-                label3.Visible = false;
-                groupBox1.Size = new System.Drawing.Size(215, 90);
-                _parametr.ExistHead = false;
-            }
+            bool yesFlag = yesRadioButton.Checked;
+            headLength.Visible = yesFlag;
+            label2.Visible = yesFlag;
+            label3.Visible = yesFlag;
+            groupBox1.Size = yesFlag
+                ? new System.Drawing.Size(215, 105)
+                : new System.Drawing.Size(215, 90);
+            _parametr.ExistHead = yesFlag;                  
         }
 
         /// <summary>
@@ -95,28 +91,25 @@ namespace CandleSW
         /// </summary>
         private void button2_Click(object sender, EventArgs e)
         {
-           
-            //List<TextBox> obj = new List<TextBox> { headLength, plinthLength };
-            //Initialize();
-            //TODO: По умолчанию хранить как структуру
-            headLength.Text= "8";
-            plinthLength.Text = "30";
-            nutLength.Text = "9";
-            isolatorLength.Text = "8";
-            carvingLength.Text = "12";
-            electrodeLength.Text = "2";
-            sizeNut.Text = "16";
-            carvingType.Text = "M12x1.25";
-            etching.Text = "DENSO";
-            yesRadioButton.Checked = true;
+            Initialize();
         }
-
-        //public Dictionary<TextBox, string> Parameters { get; private set; }
 
         private void Initialize()
         {
-            
+            // Добавление в словарь значений
+            AddToDefaultDictionary();
 
+            // Вывод в textbox
+            headLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.HeadLength]);
+            plinthLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.PlinthLength]);
+            nutLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.NutLength]);
+            isolatorLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.IsolatorLength]);
+            carvingLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.CarvingLength]);
+            electrodeLength.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.ElectrodeLength]);
+            sizeNut.Text = Convert.ToString(_defaultParametr[CandleParametrs.Params.NutSize]);
+            carvingType.Text = "M12x1.25";
+            etching.Text = "DENSO";
+            yesRadioButton.Checked = true;
         }
 
         /// <summary>
@@ -132,7 +125,6 @@ namespace CandleSW
         /// </summary>
         private void CandleForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             if (DialogResult.Yes == MessageBox.Show("Вы действительно хотите выйти?", "Выход", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation))
             {
                 _candle.SwApp.ExitApp();
@@ -222,21 +214,8 @@ namespace CandleSW
         /// </summary>
         private void ChooseLengthOfElectrode()
         {
-            switch (electrodeLength.SelectedIndex)
-            {
-                case 0:
-                    _parametr.ElectrodeLength = 1;
-                    label20.Text = "3";
-                    break;
-                case 1:
-                    _parametr.ElectrodeLength = 2;
-                    label20.Text = "2";
-                    break;
-                case 2:
-                    _parametr.ElectrodeLength = 3;
-                    label20.Text = "1";
-                    break;
-            }
+            _parametr.ElectrodeLength = electrodeLength.SelectedIndex + 1;
+            label20.Text = Convert.ToString(3 - electrodeLength.SelectedIndex);
         }
 
         /// <summary>
@@ -244,21 +223,34 @@ namespace CandleSW
         /// </summary>
         private void ChoiseNutSize()
         {
+            _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
             switch (sizeNut.SelectedIndex)
             {
                 case 0:
-                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
                     _parametr.ChamferRadius = 0.008;
                     break;
                 case 1:
-                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
                     _parametr.ChamferRadius = 0.0095;
                     break;
                 case 2:
-                    _parametr.NutSize = Convert.ToDouble(sizeNut.Text);
                     _parametr.ChamferRadius = 0.01;
                     break;
             }
+        }
+
+        /// <summary>
+        /// Добавление в словарь значений по умолчанию
+        /// </summary>
+        /// 
+        private void AddToDefaultDictionary()
+        {
+            _defaultParametr.Add(CandleParametrs.Params.HeadLength, 8);
+            _defaultParametr.Add(CandleParametrs.Params.PlinthLength, 30);
+            _defaultParametr.Add(CandleParametrs.Params.NutLength, 9);
+            _defaultParametr.Add(CandleParametrs.Params.IsolatorLength, 10);
+            _defaultParametr.Add(CandleParametrs.Params.CarvingLength, 12);
+            _defaultParametr.Add(CandleParametrs.Params.ElectrodeLength, 2);
+            _defaultParametr.Add(CandleParametrs.Params.NutSize, 16);
         }
 
         /// <summary>
@@ -275,4 +267,5 @@ namespace CandleSW
         #endregion
 
     }
+    
 }

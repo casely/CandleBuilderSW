@@ -12,6 +12,20 @@ namespace CandleSW
     public class CandleParametrs
     {
         /// <summary>
+        /// Перечисление параметров
+        /// </summary>
+        public enum Params
+        {
+            HeadLength,
+            PlinthLength,
+            NutLength,
+            IsolatorLength,
+            CarvingLength,
+            ElectrodeLength,
+            NutSize
+        };
+
+        /// <summary>
         /// Наличие головки
         /// </summary>
         public bool ExistHead = true;
@@ -179,5 +193,6 @@ namespace CandleSW
                     _electrodeLength = value;
             }
         }
+
     }
 }
